@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.65">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Chemical Test Application&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body onload="brython()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Chemical Test Application&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Available Tests:&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;li&gt;flame&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;li&gt;sodium hydroxide&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;li&gt;silver nitrate solution&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;li&gt;dilute acid&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;li&gt;barium chloride solution&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/ul&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Enter Test Category:&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="test_category"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="ask_question()"&gt;Ask Question&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Responses:&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;ul id="responses"&gt;&lt;/ul&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;Guess the Ions:&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="positive_ion" placeholder="Guess Positive Ion"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="negative_ion" placeholder="Guess Negative Ion"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="check_guesses()"&gt;Check Guesses&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/python"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>from browser import document, alert</p>
+<p class="p1"><span class="Apple-converted-space">        </span>import random</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>list1 = ['lithium', 'sodium', 'potassium', 'calcium', 'copper (II)', 'magnesium', 'aluminium', 'iron (II)', 'iron (III)']</p>
+<p class="p1"><span class="Apple-converted-space">        </span>list2 = ['chloride', 'bromide', 'iodide', 'carbonate', 'sulfate']</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>item1 = random.choice(list1)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>item2 = random.choice(list2)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>question_count = 0</p>
+<p class="p1"><span class="Apple-converted-space">        </span>correct_count = 0</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>def answer_question(item, category):</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flame = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'lithium': 'You observe a crimson flame',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'sodium': 'You observe a yellow flame',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'potassium': 'You observe a lilac flame',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'calcium': 'You observe a brick-red flame',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'copper (II)': 'You observe a blue-green flame',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>sodium_hydroxide = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'magnesium': 'A white precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'calcium': 'A white precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'aluminium': 'A white precipitate forms, then dissolves in solution',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'copper (II)': 'A blue precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'iron (II)': 'A dirty green precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'iron (III)': 'A reddish brown precipitate forms'</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>silver_nitrate_solution = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'chloride': 'A white precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'bromide': 'A cream precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'iodide': 'A yellow precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>dilute_acid = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'carbonate': 'CO₂ is produced',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>barium_chloride_solution = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'sulfate': 'A white precipitate forms',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if category == 'flame':</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return flame.get(item)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>elif category == 'sodium hydroxide':</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return sodium_hydroxide.get(item)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>elif category == 'silver nitrate solution':</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return silver_nitrate_solution.get(item)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>elif category == 'dilute acid':</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return dilute_acid.get(item)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>elif category == 'barium chloride solution':</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return barium_chloride_solution.get(item)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return None</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>def ask_question():</p>
+<p class="p1"><span class="Apple-converted-space">            </span>global question_count</p>
+<p class="p1"><span class="Apple-converted-space">            </span>category = document['test_category'].value.strip().lower()</p>
+<p class="p1"><span class="Apple-converted-space">            </span>question_count += 1</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>answer1 = answer_question(item1, category)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>answer2 = answer_question(item2, category)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>responses = []</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if answer1 or answer2:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if answer1:</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>responses.append(answer1)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if answer2:</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>responses.append(answer2)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>responses.append("You observe no changes.")</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document['responses'].clear()<span class="Apple-converted-space">  </span># Clear previous responses</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for response in responses:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document['responses'] &lt;= f"&lt;li&gt;{response}&lt;/li&gt;"</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>def check_guesses():</p>
+<p class="p1"><span class="Apple-converted-space">            </span>global correct_count</p>
+<p class="p1"><span class="Apple-converted-space">            </span>guess1 = document['positive_ion'].value.strip().lower()</p>
+<p class="p1"><span class="Apple-converted-space">            </span>guess2 = document['negative_ion'].value.strip().lower()</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>response = ""</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if guess1 == item1:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>response += f"Correct! The positive ion is indeed {item1}.&lt;br&gt;"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>correct_count += 1</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>response += f"Incorrect. The positive ion was {item1}.&lt;br&gt;"</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if guess2 == item2:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>response += f"Correct! The negative ion is indeed {item2}.&lt;br&gt;"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>correct_count += 1</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else:</p>
+<p class="p1"><span class="Apple-converted-space">                </span>response += f"Incorrect. The negative ion was {item2}.&lt;br&gt;"</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>score = correct_count * 10 - question_count</p>
+<p class="p1"><span class="Apple-converted-space">            </span>score = max(score, 0)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>response += f"Your score is: {score}/20"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>alert(response)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
